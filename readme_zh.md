@@ -95,29 +95,29 @@
 
 1. **构建局部二维坐标系**：
    使用 $\vec{i}$ 作为 X 轴，通过 $\vec{k}$ 和 $\vec{i}$ 的叉乘求得 Y 轴：
-   
+
 $$
 \vec{u}_x = \vec{i}
 $$
-   
+
 $$
 \vec{u}_y = \vec{k} \times \vec{i}
 $$
 
 2. **计算投影坐标**：
    将活动向量 $\vec{j}$ 点乘上述基底，得到其在二维平面上的坐标 $(x, y)$：
-   
+
 $$
 x = \vec{j} \cdot \vec{u}_x
 $$
-   
+
 $$
 y = \vec{j} \cdot \vec{u}_y
 $$
 
 3. **求解绝对角度**：
    利用反正切函数求得当前状态下的绝对夹角 $\theta$，并将其映射至 $[0^\circ, 360^\circ)$ 区间：
-   
+
 $$
 \theta = \text{atan2}(y, x)
 $$
@@ -134,14 +134,14 @@ $$
 
 1. **阈值重映射 (Thresholding)**：
    当 $\Delta\theta > \text{Threshold}$ 时，系统会自动执行：
-   
+
 $$
 \Delta\theta = \Delta\theta - 360^\circ
 $$
 
 2. **反向**：
    如果勾选了“反向”，则：
-   
+
 $$
 \Delta\theta = -\Delta\theta
 $$

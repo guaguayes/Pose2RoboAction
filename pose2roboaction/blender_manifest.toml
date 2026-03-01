@@ -1,6 +1,6 @@
 schema_version = "1.0.0"
 id = "pose2roboaction"
-version = "1.0.0"
+version = "1.0.1"
 name = "Pose2RoboAction"
 tagline = "Exports cg animation data into robot urdf action sequences."
 maintainer = "Kennv"
@@ -17,3 +17,5 @@ license = [
 description = """
 This is a tool that exports cg animation data into robot urdf action sequences. The file format is csv.
 """
+[permissions]
+files = "Need to read and write local disk to export CSV action sequence file."
