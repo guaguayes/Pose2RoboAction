@@ -13,7 +13,7 @@
 </p>
 </div>
 <div align="right">
-  🌍 <b>English</b> | <a href="README_zh.md">简体中文</a>
+  🌍 <b>English</b> | <a href="readme_zh.md">简体中文</a>
 </div>
 
 ---
@@ -96,31 +96,31 @@ The system uses $\vec{k}$ as the normal to determine a 2D plane and projects $\v
 1. **Construct a local 2D coordinate system**:
    Using $\vec{i}$ as the X-axis, the Y-axis is obtained by the cross product of $\vec{k}$ and $\vec{i}$:
    
-   $$
-   \vec{u}_x = \vec{i}
-   $$
+$$
+\vec{u}_x = \vec{i}
+$$
    
-   $$
-   \vec{u}_y = \vec{k} \times \vec{i}
-   $$
+$$
+\vec{u}_y = \vec{k} \times \vec{i}
+$$
 
 2. **Calculate projection coordinates**:
    Dot product the active vector $\vec{j}$ with the basis above to get its coordinates $(x, y)$ on the 2D plane:
    
-   $$
-   x = \vec{j} \cdot \vec{u}_x
-   $$
+$$
+x = \vec{j} \cdot \vec{u}_x
+$$
    
-   $$
-   y = \vec{j} \cdot \vec{u}_y
-   $$
+$$
+y = \vec{j} \cdot \vec{u}_y
+$$
 
 3. **Solve the absolute angle**:
    Use the arctangent function to find the absolute angle $\theta$ in the current state, and map it to the $[0^\circ, 360^\circ)$ range:
    
-   $$
-   \theta = \text{atan2}(y, x)
-   $$
+$$
+\theta = \text{atan2}(y, x)
+$$
 
 #### 3. Relative Delta Calculation
 
@@ -135,16 +135,16 @@ $$
 1. **Thresholding**:
    When $\Delta\theta > \text{Threshold}$, the system automatically executes:
    
-   $$
-   \Delta\theta = \Delta\theta - 360^\circ
-   $$
+$$
+\Delta\theta = \Delta\theta - 360^\circ
+$$
 
 2. **Reverse**:
    If "Reverse" is checked, then:
    
-   $$
-   \Delta\theta = -\Delta\theta
-   $$
+$$
+\Delta\theta = -\Delta\theta
+$$
 
 3. **Unit Conversion**:
    According to the global settings, the degrees are either output directly or converted to radians and written to the CSV sequence.
