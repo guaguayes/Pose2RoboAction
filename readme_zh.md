@@ -8,7 +8,7 @@
     <img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="License">
   </a>
   <a href="https://github.com/guaguayes/Pose2RoboAction/releases/latest">
-    <img src="https://img.shields.io/github/v/release/guaguayes/Pose2RoboAction?label=最新版本&style=flat-square&color=success" alt="Latest Release">
+    <img src="https://img.shields.io/github/v/release/guaguayes/Pose2RoboAction?label=%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC&style=flat-square&color=success" alt="Latest Release">
   </a>
 </p>
 </div>
@@ -73,7 +73,7 @@
 
 - **反向**：用于控制是否将输出的值乘以$-1$。
 
-- **阈值**：判断机器人关节正/反转翻转的阈值，默认为 $180^\circ$。当旋转角度超过该阈值时将被重映射为反方向旋转（例如将阈值设置为$210^\circ$,当关节角度为$200^\circ$时(静置姿态视为$0^\circ$),插件将其视为$200^\circ$导出,如果角度超过阈值,例如$300^\circ$,则插件将其视为反方向旋转$60^\circ$($300^\circ-360^\circ$)导出,即$-60^\circ$）。
+- **阈值**：判断机器人关节正/反转翻转的阈值，默认为 $180^\circ$。当旋转角度超过该阈值时将被重映射为反方向旋转（例如将阈值设置为 $210^\circ$,当关节角度为 $200^\circ$ 时(静置姿态视为 $0^\circ$),插件将其视为 $200^\circ$ 导出,如果角度超过阈值,例如 $300^\circ$,则插件将其视为反方向旋转 $60^\circ$($300^\circ-360^\circ$)导出,即 $-60^\circ$）。
 
 ---
 
