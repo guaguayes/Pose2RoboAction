@@ -160,7 +160,7 @@ $$
 $$
 
 4. **真实物理阈值判定**：
-   此时的角度已经是纯正的机器人实际角度[$0^\circ$, $360^\circ$)。直接在此基础上套用用户的翻转阈值。当 $\theta_{\text{norm}} > \text{Threshold}$ 时，系统会自动执行翻转：
+   此时的角度已经是纯正的机器人实际角度[ $0^\circ$, $360^\circ$)。直接在此基础上套用用户的翻转阈值。当 $\theta_{\text{norm}} > \text{Threshold}$ 时，系统会自动执行翻转：
 
 $$
 \text{Final Angle} = \theta_{\text{norm}} - 360^\circ

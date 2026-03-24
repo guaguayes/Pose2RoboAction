@@ -160,7 +160,7 @@ $$
 $$
 
 4. **Real Physical Thresholding**:
-   The angle at this point is the pure actual robot angle [$0^\circ$, $360^\circ$). Directly apply the user's rollover threshold based on this. When $\theta_{\text{norm}} > \text{Threshold}$, the system will automatically execute a rollover:
+   The angle at this point is the pure actual robot angle [ $0^\circ$, $360^\circ$). Directly apply the user's rollover threshold based on this. When $\theta_{\text{norm}} > \text{Threshold}$, the system will automatically execute a rollover:
 
 $$
 \text{Final Angle} = \theta_{\text{norm}} - 360^\circ
