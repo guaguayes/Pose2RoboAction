@@ -18,10 +18,11 @@ class Pose2Robo_JointItem(PropertyGroup):
     axis_k: EnumProperty(name="Axis K", items=axis_items, default='Z')
     
     is_reverse: BoolProperty(name="Reverse", default=False)
+    # 【新增】：初始角度（URDF零位偏移量）
+    offset_angle: FloatProperty(name="Initial Angle", default=0.0)
     threshold: FloatProperty(name="Threshold", default=180.0, min=0, max=360, soft_min=0, soft_max=360)
 
 class Pose2Robo_Settings(PropertyGroup):
-    # 【修改点】：将默认路径改为相对工程目录的 CsvOutput 文件夹
     export_path: StringProperty(name="Export Path", subtype='FILE_PATH', default="//CsvOutput/export.csv", options={'PATH_SUPPORTS_BLEND_RELATIVE'})
     target_armature: PointerProperty(name="Target Armature", type=bpy.types.Object)
 
@@ -35,9 +36,7 @@ class Pose2Robo_Settings(PropertyGroup):
         default='RADIAN'
     )
 
-    # --- 全局配置的展开状态控制 ---
     is_expanded_global: BoolProperty(name="Expand Global Panel", default=True)
-
     is_expanded_a: BoolProperty(name="Expand Panel A", default=True)
 
     export_root: BoolProperty(name="Export Single Bone Full Space Pose", default=True)
@@ -51,9 +50,7 @@ class Pose2Robo_Settings(PropertyGroup):
     rot_w_name: StringProperty(name="rot w", default="root rot w")
     correction_euler: FloatVectorProperty(name="Euler Correction", subtype='EULER', default=(0.0, 0.0, 0.0))
 
-    # --- Config B 的整体展开状态控制 ---
     is_expanded_b: BoolProperty(name="Expand Panel B", default=True)
-
     export_joints: BoolProperty(name="Export Single Joint Angles", default=True)
     joints_list: CollectionProperty(type=Pose2Robo_JointItem)
     list_index: IntProperty(name="List Index", default=0)

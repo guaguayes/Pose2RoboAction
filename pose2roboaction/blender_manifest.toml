@@ -1,12 +1,12 @@
 schema_version = "1.0.0"
 id = "pose2roboaction"
-version = "1.0.1"
+version = "1.1.0"
 name = "Pose2RoboAction"
-tagline = "Exports cg animation data into robot urdf action sequences."
+tagline = "Exports CG animation data into robot URDF action sequences."
 maintainer = "Kennv"
 type = "add-on"
 
-blender_version_min = "4.5.0"
+blender_version_min = "4.2.0"
 
 tags = ["Import-Export"]
 
@@ -14,8 +14,11 @@ license = [
     "SPDX-License-Identifier: MIT"
 ]
 
+website = "https://github.com/guaguayes/Pose2RoboAction"
+issues = "https://github.com/guaguayes/Pose2RoboAction/issues"
+
 description = """
-This is a tool that exports cg animation data into robot urdf action sequences. The file format is csv.
+This is a tool that exports CG animation data into robot URDF action sequences. The file format is CSV.
 """
 [permissions]
 files = "Need to read and write local disk to export CSV action sequence file."

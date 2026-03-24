@@ -71,6 +71,8 @@ Exporting an action sequence takes just three simple steps:
 
 - **Normal k**: Select one axis of the Base Bone's coordinate system to determine the plane onto which **Reference i** and **Active j** will be projected. This plane is the normal plane of **Normal k**. The angle is calculated after projecting **Reference i** and **Active j** onto this plane.
 
+- **Initial Angle**: Used to manually specify the absolute physical angle of the corresponding URDF joint on the real robot when the Blender armature is in its rest pose (Edit Mode). This value serves as the base zero-position offset for calculating the final absolute angle in the real world.
+
 - **Reverse**: Used to control whether the output value is multiplied by $-1$.
 
 - **Threshold**: The threshold to determine the forward/reverse rollover of the robot joint, defaulting to $180^\circ$. When the rotation angle exceeds this threshold, it will be remapped to a reverse rotation. (For example, if the threshold is set to $210^\circ$, when the joint angle is $200^\circ$ (Rest pose is considered $0^\circ$), the plugin exports it as $200^\circ$. If the angle exceeds the threshold, e.g., $300^\circ$, the plugin considers it as a reverse rotation of $60^\circ$ ($300^\circ - 360^\circ$) and exports it as $-60^\circ$).
@@ -127,27 +129,45 @@ $$
 Before exporting, the system pre-calculates the initial angle $\theta_{\text{rest}}$ when the armature is in its rest pose. When iterating through the animation frames, it calculates the net displacement for each frame:
 
 $$
-\Delta\theta = \theta_{\text{current}} - \theta_{\text{rest}}
+\Delta\theta_{\text{blender}} = \theta_{\text{current}} - \theta_{\text{rest}}
 $$
 
-#### 4. Post-Processing
+#### 4. URDF Angle Calculation & Post-Processing
 
-1. **Thresholding**:
-   When $\Delta\theta > \text{Threshold}$, the system automatically executes:
+In this stage, the system seamlessly maps the relative motion in Blender to the absolute angle in the real robot URDF coordinate system.
 
-$$
-\Delta\theta = \Delta\theta - 360^\circ
-$$
-
-2. **Reverse**:
-   If "Reverse" is checked, then:
+1. **Map Motion Direction**: 
+   If "Reverse" is checked on the panel, it means the positive rotation direction of the URDF joint is opposite to that of Blender. The system only reverses the **motion delta**:
 
 $$
-\Delta\theta = -\Delta\theta
+\Delta\theta_{\text{move}} = -\Delta\theta_{\text{blender}}
 $$
 
-3. **Unit Conversion**:
-   According to the global settings, the degrees are either output directly or converted to radians and written to the CSV sequence.
+   *(If unchecked, then $\Delta\theta_{\text{move}} = \Delta\theta_{\text{blender}}$)*
+
+2. **Calculate URDF Absolute Angle**:
+   Add the above motion delta to the user-specified "Initial Angle" to calculate the absolute angle of the current joint in the real world:
+
+$$
+\theta_{\text{abs}} = \theta_{\text{offset}} + \Delta\theta_{\text{move}}
+$$
+
+3. **Normalization**:
+   Use modulo operation to forcefully map and truncate the absolute angle into a positive single-circle range:
+
+$$
+\theta_{\text{norm}} = \theta_{\text{abs}} \pmod{360^\circ}
+$$
+
+4. **Real Physical Thresholding**:
+   The angle at this point is the pure actual robot angle ($[0^\circ, 360^\circ)$). Directly apply the user's rollover threshold based on this. When $\theta_{\text{norm}} > \text{Threshold}$, the system will automatically execute a rollover:
+
+$$
+\text{Final Angle} = \theta_{\text{norm}} - 360^\circ
+$$
+
+5. **Unit Conversion**:
+   According to the global settings, the final degrees are either output directly or converted to radians and written to the CSV sequence.
 
 ---
 

@@ -73,6 +73,8 @@
 
 - **反向**：用于控制是否将输出的值乘以 $-1$。
 
+- **初始角度:** 用于手动指定当前骨架在静止姿态（Rest Pose / 编辑模式）下，所对应的真实机器人 URDF 的 joint 角度。该值将作为基准零位偏移量（Offset），用于推算关节在  URDF模型中的最终角度。 
+
 - **阈值**：判断机器人关节正/反转翻转的阈值，默认为 $180^\circ$。当旋转角度超过该阈值时将被重映射为反方向旋转（例如将阈值设置为 $210^\circ$,当关节角度为 $200^\circ$ 时(静置姿态视为 $0^\circ$),插件将其视为 $200^\circ$ 导出,如果角度超过阈值,例如 $300^\circ$,则插件将其视为反方向旋转 $60^\circ$($300^\circ-360^\circ$)导出,即 $-60^\circ$）。
 
 ---
@@ -127,27 +129,45 @@ $$
 系统会在导出前，预先计算一遍骨架处于静止姿态时的初始夹角 $\theta_{\text{rest}}$。在遍历动画帧时，计算每一帧的净位移：
 
 $$
-\Delta\theta = \theta_{\text{current}} - \theta_{\text{rest}}
+\Delta\theta_{\text{blender}} = \theta_{\text{current}} - \theta_{\text{rest}}
 $$
 
-#### 4. 数据后处理
+#### 4. URDF角度推算与后处理
 
-1. **阈值重映射 (Thresholding)**：
-   当 $\Delta\theta > \text{Threshold}$ 时，系统会自动执行：
+在此阶段，系统将 Blender 中的相对运动量无缝映射为真实机器人 URDF 坐标系下的绝对角度。
 
-$$
-\Delta\theta = \Delta\theta - 360^\circ
-$$
-
-2. **反向**：
-   如果勾选了“反向”，则：
+1. **映射运动方向**： 
+   如果面板勾选了“反向”，说明 URDF 关节的旋转正方向与 Blender 相反。系统仅对**运动增量**进行反转：
 
 $$
-\Delta\theta = -\Delta\theta
+\Delta\theta_{\text{move}} = -\Delta\theta_{\text{blender}}
 $$
 
-3. **单位转换**：
-   根据全局设置，将度数直接输出，或转换为弧度写入 CSV 序列。
+   *(若未勾选，则 $\Delta\theta_{\text{move}} = \Delta\theta_{\text{blender}}$)*
+
+2. **推算 URDF 绝对角度**：
+   将上述运动增量，叠加到用户手动指定的“初始角度”上，推算出当前关节在真实世界中的绝对角度：
+
+$$
+\theta_{\text{abs}} = \theta_{\text{offset}} + \Delta\theta_{\text{move}}
+$$
+
+3. **归一化**：
+   利用取模运算，将绝对角度强行映射并截断至正数单圈范围内：
+
+$$
+\theta_{\text{norm}} = \theta_{\text{abs}} \pmod{360^\circ}
+$$
+
+4. **真实物理阈值判定**：
+   此时的角度已经是纯正的机器人实际角度($[0^\circ, 360^\circ)$)。直接在此基础上套用用户的翻转阈值。当 $\theta_{\text{norm}} > \text{Threshold}$ 时，系统会自动执行翻转：
+
+$$
+\text{Final Angle} = \theta_{\text{norm}} - 360^\circ
+$$
+
+5. **单位转换**：
+   根据全局设置，将最终的度数直接输出，或转换为弧度写入 CSV 序列。
 
 ---
 

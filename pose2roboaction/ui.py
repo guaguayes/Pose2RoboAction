@@ -16,13 +16,11 @@ class VIEW3D_PT_Pose2Robo_Main(Panel):
         # --- 1. 全局配置 ---
         box = layout.box()
         
-        # 绘制带折叠三角的标题栏
         header_global = box.row(align=True)
         icon_state_global = 'TRIA_DOWN' if props.is_expanded_global else 'TRIA_RIGHT'
         header_global.prop(props, "is_expanded_global", text="", icon=icon_state_global, emboss=False)
         header_global.label(text=iface_("Global Settings"), icon='WORLD')
         
-        # 只有在展开状态下才显示内部选项
         if props.is_expanded_global:
             col = box.column(align=True)
             col.prop(props, "export_path", text=iface_("Export Path"))
@@ -34,7 +32,6 @@ class VIEW3D_PT_Pose2Robo_Main(Panel):
             row_unit.prop(props, "angle_unit", expand=True) 
 
         # --- 2. Config A ---
-        #layout.separator()
         box_a = layout.box()
         
         header_a = box_a.row(align=True)
@@ -69,16 +66,13 @@ class VIEW3D_PT_Pose2Robo_Main(Panel):
             col.prop(props, "correction_euler", text=iface_("Euler Correction"))
 
         # --- 3. Config B ---
-        #layout.separator()
         box_b = layout.box()
         
-        # 带折叠三角的 Config B 头部栏
         header_b = box_b.row(align=True)
         icon_state_b = 'TRIA_DOWN' if props.is_expanded_b else 'TRIA_RIGHT'
         header_b.prop(props, "is_expanded_b", text="", icon=icon_state_b, emboss=False)
         header_b.prop(props, "export_joints", text=iface_("Export Single Joint Angles"))
         
-        # 只有展开且勾选时才显示内部的卡片流
         if props.is_expanded_b and props.export_joints:
             box_b.operator("pose2robo.list_add", icon='ADD', text=iface_("Add New Joint Config"))
             
@@ -114,9 +108,15 @@ class VIEW3D_PT_Pose2Robo_Main(Panel):
                     row_axes.prop(item, "axis_k", text=iface_("Normal k"))
                     col.separator()
                     
-                    row_opt = col.row(align=True)
-                    row_opt.prop(item, "is_reverse", text=iface_("Reverse"))
-                    row_opt.prop(item, "threshold", text=iface_("Threshold"))
+                    # 【核心修改】：将“初始角度”插入到布局中
+                    # 使用 split 手动划分宽度比例：前 20% 给复选框，后 75% 给数值框
+                    split = col.split(factor=0.2, align=True)
+                    split.prop(item, "is_reverse", text=iface_("Reverse"))
+
+                    # 在右侧的 75% 区域内创建一个紧凑的行
+                    row_floats = split.row(align=True)
+                    row_floats.prop(item, "offset_angle", text=iface_("Initial Angle"))
+                    row_floats.prop(item, "threshold", text=iface_("Threshold"))
 
         # --- 4. 动态显示 ---
         layout.separator()

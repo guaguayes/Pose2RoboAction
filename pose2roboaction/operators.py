@@ -2,7 +2,7 @@ import bpy
 import csv
 import math
 import mathutils
-import os # 【新增】：引入操作系统模块，用于自动创建文件夹
+import os
 from bpy.props import IntProperty
 from bpy.app.translations import pgettext_iface as iface_
 from .math_utils import get_bone_axis_vector, calculate_planar_angle_0_360
@@ -115,7 +115,6 @@ class Pose2Robo_OT_ExportCSV(bpy.types.Operator):
             props = scene.pose2robo_settings
             obj = props.target_armature
 
-            # 保留你习惯的数值，不作修改
             batch_size = 10 
             
             try:
@@ -131,17 +130,18 @@ class Pose2Robo_OT_ExportCSV(bpy.types.Operator):
                     
                     if self.valid_a_bone:
                         pb = obj.pose.bones[self.valid_a_bone]
-                        mat_world = pb.matrix 
-                        loc = mat_world.to_translation()
+                        
+                        mat_world = obj.matrix_world @ pb.matrix
+                        loc, rot, sca = mat_world.decompose()
+                        
                         row.extend([f"{loc.x:.6f}", f"{loc.y:.6f}", f"{loc.z:.6f}"])
                         
-                        raw_quat = mat_world.to_quaternion()
                         corr_rad = props.correction_euler
                         if any(abs(a) > 1e-5 for a in corr_rad):
                             corr_quat = mathutils.Euler((corr_rad.x, corr_rad.y, corr_rad.z), 'XYZ').to_quaternion()
-                            final_quat = raw_quat @ corr_quat
+                            final_quat = rot @ corr_quat
                         else:
-                            final_quat = raw_quat
+                            final_quat = rot
                             
                         row.extend([
                             f"{final_quat.x:.6f}", f"{final_quat.y:.6f}",
@@ -159,21 +159,37 @@ class Pose2Robo_OT_ExportCSV(bpy.types.Operator):
                         theta_curr = calculate_planar_angle_0_360(vec_k, vec_i, vec_j)
                         theta_rest = self.rest_angles[item.joint_name]
                         
-                        val = theta_curr - theta_rest
+                        # --- 【核心算法优化：引入 Offset 和真实 URDF 越界判定】 ---
                         
-                        while val < 0.0: val += 360.0
-                        while val >= 360.0: val -= 360.0
-
-                        if val > item.threshold:
-                            val = val - 360.0
+                        # 1. 计算 Blender 里的原始运动量
+                        delta_blender = theta_curr - theta_rest
                         
-                        if item.is_reverse:
-                            val = -val
+                        # 2. 映射运动方向 (仅反转相对运动量)
+                        delta_move = -delta_blender if item.is_reverse else delta_blender
                         
+                        # 3. 处理用户输入的初始角度单位 (将其统一转换为度数进行计算)
+                        offset_val = item.offset_angle
                         if props.angle_unit == 'RADIAN':
-                            final_val = math.radians(val)
+                            offset_deg = math.degrees(offset_val)
                         else:
-                            final_val = val
+                            offset_deg = offset_val
+                            
+                        # 4. 推算 URDF 绝对角度并归一化到圆盘
+                        theta_abs = offset_deg + delta_move
+                        theta_abs = theta_abs % 360.0  # 完美替代了之前的两个 while 循环
+                        
+                        # 5. URDF 真实阈值判定
+                        if theta_abs > item.threshold:
+                            final_deg = theta_abs - 360.0
+                        else:
+                            final_deg = theta_abs
+                        
+                        # 6. 单位输出
+                        if props.angle_unit == 'RADIAN':
+                            final_val = math.radians(final_deg)
+                        else:
+                            final_val = final_deg
+                        # ------------------------------------------------------------
                             
                         row.append(f"{final_val:.6f}")
                         
@@ -201,12 +217,9 @@ class Pose2Robo_OT_ExportCSV(bpy.types.Operator):
         try:
             export_path = bpy.path.abspath(props.export_path)
             
-            # --- 【核心修改点】：智能检查并创建不存在的文件夹 ---
             dir_name = os.path.dirname(export_path)
             if dir_name:  
-                # exist_ok=True 代表如果文件夹已存在则忽略，不报错
                 os.makedirs(dir_name, exist_ok=True)
-            # ----------------------------------------------------
 
             with open(export_path, mode='w', newline='', encoding='utf-8') as file:
                 writer = csv.writer(file)
