@@ -26,6 +26,8 @@ In Blender, go to **Edit** -> **Preferences** -> **Get Extensions** (or **Add-on
 
 👉[Click here to view the video tutorial on how to use the plug-in. It is recommended to watch it.](https://www.bilibili.com/video/BV1hsVU6tEo7)
 
+👉[Click here to view the Oli robot walking trajectory data in the video tutorial](https://github.com/guaguayes/Pose2RoboAction/tree/main/example)
+
 Exporting an action sequence takes just three simple steps:
 
 1. **Prepare Data**: Select the robot Armature with the bound actions in the 3D Viewport.
@@ -139,13 +141,11 @@ $$
 In this stage, the system seamlessly maps the relative motion in Blender to the absolute angle in the real robot URDF coordinate system.
 
 1. **Map Motion Direction**: 
-   If "Reverse" is checked on the panel, it means the positive rotation direction of the URDF joint is opposite to that of Blender. The system only reverses the **motion delta**:
+   If "Reverse" is checked on the panel, it means the positive rotation direction of the URDF joint is opposite to that of Blender. The system only reverses the **motion delta** (If unchecked, then $\Delta\theta_{\text{move}} = \Delta\theta_{\text{blender}}$ ):
 
 $$
 \Delta\theta_{\text{move}} = -\Delta\theta_{\text{blender}}
 $$
-
-   *(If unchecked, then $\Delta\theta_{\text{move}} = \Delta\theta_{\text{blender}}$ )*
 
 2. **Calculate URDF Absolute Angle**:
    Add the above motion delta to the user-specified "Initial Angle" to calculate the absolute angle of the current joint in the real world:

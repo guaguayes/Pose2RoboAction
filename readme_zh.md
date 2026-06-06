@@ -26,6 +26,8 @@
 
 👉[点击这里查看插件的视频使用教程,建议观看](https://www.bilibili.com/video/BV1hsVU6tEo7)
 
+👉[点击这里查看视频教程内Oli机器人行走轨迹数据](https://github.com/guaguayes/Pose2RoboAction/tree/main/example)
+
 仅需三步即可完成一次动作序列的导出：
 
 1. **准备数据**：在 3D 视图中选中你已经绑定好动作的机器人骨架。
@@ -139,13 +141,11 @@ $$
 在此阶段，系统将 Blender 中的相对运动量无缝映射为真实机器人 URDF 坐标系下的绝对角度。
 
 1. **映射运动方向**： 
-   如果面板勾选了“反向”，说明 URDF 关节的旋转正方向与 Blender 相反。系统仅对**运动增量**进行反转：
+   如果面板勾选了“反向”，说明 URDF 关节的旋转正方向与 Blender 相反。系统仅对**运动增量**进行反转 (若未勾选，则 $\Delta\theta_{\text{move}} = \Delta\theta_{\text{blender}}$ )：
 
 $$
 \Delta\theta_{\text{move}} = -\Delta\theta_{\text{blender}}
 $$
-
-   *(若未勾选，则 $\Delta\theta_{\text{move}} = \Delta\theta_{\text{blender}}$ )*
 
 2. **推算 URDF 绝对角度**：
    将上述运动增量，叠加到用户手动指定的“初始角度”上，推算出当前关节在真实世界中的绝对角度：
