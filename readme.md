@@ -26,7 +26,7 @@ In Blender, go to **Edit** -> **Preferences** -> **Get Extensions** (or **Add-on
 
 👉[Click here to view the video tutorial on how to use the plug-in. It is recommended to watch it.](https://www.bilibili.com/video/BV1hsVU6tEo7)
 
-👉[Click here to view the Oli robot walking trajectory data in the video tutorial](https://github.com/guaguayes/Pose2RoboAction/tree/main/example)
+👉[Click here to view the Oli robot walking trajectory data in the video tutorial](https://github.com/guaguayes/Pose2RoboAction/tree/main/example/Robot_Oli)
 
 Exporting an action sequence takes just three simple steps:
 

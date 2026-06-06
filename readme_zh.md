@@ -26,7 +26,7 @@
 
 👉[点击这里查看插件的视频使用教程,建议观看](https://www.bilibili.com/video/BV1hsVU6tEo7)
 
-👉[点击这里查看视频教程内Oli机器人行走轨迹数据](https://github.com/guaguayes/Pose2RoboAction/tree/main/example)
+👉[点击这里查看视频教程内Oli机器人行走轨迹数据](https://github.com/guaguayes/Pose2RoboAction/tree/main/example/Robot_Oli)
 
 仅需三步即可完成一次动作序列的导出：
 
