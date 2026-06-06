@@ -14,7 +14,7 @@
   <img src="../media/example_zh_1.png" alt="" width="400">
 </p>
 
-1.首先配置好导出路径、目标骨架、目标动作与导出单位。
+1.首先配置好导出路径、目标骨架、目标动作与导出单位，以及设置时间线上的动画范围。
 
 <p align="center">
   <img src="../media/example_1.png" alt="" width="600">

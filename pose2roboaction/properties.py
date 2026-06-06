@@ -26,7 +26,7 @@ class Pose2Robo_Settings(PropertyGroup):
     export_path: StringProperty(name="Export Path", subtype='FILE_PATH', default="//CsvOutput/export.csv", options={'PATH_SUPPORTS_BLEND_RELATIVE'})
     target_armature: PointerProperty(name="Target Armature", type=bpy.types.Object)
 
-    target_action: PointerProperty(name="Target Action", type=bpy.types.Action, description="If empty, exports the currently playing action on the timeline by default")
+    target_action: PointerProperty(name="Target Action", type=bpy.types.Action, description="If empty, exports the currently playing action within the timeline frame range")
     angle_unit: EnumProperty(
         name="Export Unit",
         items=[

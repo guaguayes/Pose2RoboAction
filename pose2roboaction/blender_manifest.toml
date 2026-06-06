@@ -1,6 +1,6 @@
 schema_version = "1.0.0"
 id = "pose2roboaction"
-version = "1.1.0"
+version = "1.1.1"
 name = "Pose2RoboAction"
 tagline = "Exports CG animation data into robot URDF action sequences."
 maintainer = "Kennv"

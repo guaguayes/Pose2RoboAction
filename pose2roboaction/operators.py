@@ -80,9 +80,10 @@ class Pose2Robo_OT_ExportCSV(bpy.types.Operator):
 
         if obj.animation_data and obj.animation_data.action:
             action = obj.animation_data.action
-            self.start_f = int(action.frame_range[0])
-            self.end_f = int(action.frame_range[1])
-            self.report({'INFO'}, f"{iface_('Action detected, preparing to export...')} ({action.name})")
+            # 注释读取首尾关键帧逻辑,因为某些情况下这可能导致副作用
+            # self.start_f = int(action.frame_range[0])
+            # self.end_f = int(action.frame_range[1])
+            self.report({'INFO'}, f"{iface_('Action detected, preparing to export...')} ({action.name}) [{self.start_f} - {self.end_f}]")
         
         self.total_frames = max(1, self.end_f - self.start_f + 1)
         self.current_f = self.start_f

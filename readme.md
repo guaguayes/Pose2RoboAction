@@ -24,6 +24,8 @@ In Blender, go to **Edit** -> **Preferences** -> **Get Extensions** (or **Add-on
 
 ## 2. 🚀 Quick Start
 
+👉[Click here to view the video tutorial on how to use the plug-in. It is recommended to watch it.](https://www.bilibili.com/video/BV1hsVU6tEo7)
+
 Exporting an action sequence takes just three simple steps:
 
 1. **Prepare Data**: Select the robot Armature with the bound actions in the 3D Viewport.
@@ -31,7 +33,7 @@ Exporting an action sequence takes just three simple steps:
    - In **Global Settings**, specify the export `.csv` file path, Target Armature, Target Action, and Export Unit.
    - Choose whether to enable "Export Single Bone Full Space Pose" and "Export Single Joint Angles" based on your needs.
    - Configure the specific mapping data for the full space pose and individual joints.
-3. **One-Click Export**: Click the `Start Exporting CSV Sequence` button at the bottom of the panel.
+3. **One-Click Export**: Click the `Start Exporting CSV Sequence` button at the bottom of the panel,the frame range exported by this plug-in is from the **start frame** to the **end frame** set on the timeline.
 
 ## 3. ⚙️ Panel Parameters Guide
 
@@ -143,7 +145,7 @@ $$
 \Delta\theta_{\text{move}} = -\Delta\theta_{\text{blender}}
 $$
 
-   *(If unchecked, then $\Delta\theta_{\text{move}} = \Delta\theta_{\text{blender}}$)*
+   *(If unchecked, then $\Delta\theta_{\text{move}} = \Delta\theta_{\text{blender}}$ )*
 
 2. **Calculate URDF Absolute Angle**:
    Add the above motion delta to the user-specified "Initial Angle" to calculate the absolute angle of the current joint in the real world:

@@ -14,7 +14,7 @@
   <img src="../media/example_en_1.png" alt="" width="500">
 </p>
 
-1. First, configure the Export Path, Target Armature, Target Action, and Export Unit.
+1. First, configure the Export Path, Target Armature, Target Action, Export Unit, and set the animation range on the timeline.
 
 <p align="center">
   <img src="../media/example_1.png" alt="" width="600">
